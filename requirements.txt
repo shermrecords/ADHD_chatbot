@@ -1,0 +1,7 @@
+Flask
+gunicorn
+python-dotenv
+chromadb
+sentence-transformers
+google-genai
+torch

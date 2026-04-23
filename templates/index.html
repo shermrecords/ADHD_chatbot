@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADHD Chatbot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app">
+    <div class="chat-shell">
+      <div class="header">
+        <h1>ADHD Psychoeducation Chatbot</h1>
+        <p>Ask a question about ADHD.</p>
+      </div>
+
+      <div id="chat" class="chat"></div>
+
+      <form id="chat-form" class="composer">
+        <textarea id="message" placeholder="Ask a question..." rows="3"></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("chat-form");
+    const chat = document.getElementById("chat");
+    const messageInput = document.getElementById("message");
+
+    function addMessage(role, text) {
+      const bubble = document.createElement("div");
+      bubble.className = `bubble ${role}`;
+      bubble.innerText = text || "";
+      chat.appendChild(bubble);
+      chat.scrollTop = chat.scrollHeight;
+      return bubble;
+    }
+
+    function addSources(sources) {
+      if (!sources || !sources.length) return;
+
+      const box = document.createElement("div");
+      box.className = "sources";
+
+      const title = document.createElement("div");
+      title.className = "sources-title";
+      title.innerText = "Sources";
+      box.appendChild(title);
+
+      const list = document.createElement("ul");
+      for (const src of sources) {
+        const li = document.createElement("li");
+        li.innerText = src.year
+          ? `${src.paper_title} (${src.year})`
+          : src.paper_title;
+        list.appendChild(li);
+      }
+
+      box.appendChild(list);
+      chat.appendChild(box);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const message = messageInput.value.trim();
+      if (!message) return;
+
+      addMessage("user", message);
+      messageInput.value = "";
+
+      const thinkingBubble = addMessage("assistant", "Thinking...");
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await res.json();
+        thinkingBubble.remove();
+
+        if (!res.ok) {
+          addMessage("assistant", data.error || "Something went wrong.");
+          return;
+        }
+
+        addMessage("assistant", data.answer || "");
+
+        if (data.show_sources) {
+          addSources(data.sources || []);
+        }
+      } catch (err) {
+        thinkingBubble.remove();
+        addMessage("assistant", "Network error. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>

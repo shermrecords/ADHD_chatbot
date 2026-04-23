@@ -1,0 +1,136 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1020;
+  color: #e8ecf4;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.chat-shell {
+  width: 100%;
+  max-width: 900px;
+  background: #121a2b;
+  border: 1px solid #24324a;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.header {
+  padding: 20px;
+  border-bottom: 1px solid #24324a;
+}
+
+.header h1 {
+  margin: 0 0 6px 0;
+  font-size: 24px;
+}
+
+.header p {
+  margin: 0;
+  color: #a9b5c9;
+}
+
+.chat {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 60vh;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background: #2a6df4;
+  color: white;
+}
+
+.bubble.assistant {
+  align-self: flex-start;
+  background: #1b263b;
+  color: #e8ecf4;
+}
+
+.sources {
+  background: #101827;
+  border: 1px solid #24324a;
+  border-radius: 12px;
+  padding: 12px 14px;
+  max-width: 78%;
+}
+
+.sources-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.sources ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.composer {
+  border-top: 1px solid #24324a;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.composer textarea {
+  flex: 1;
+  resize: vertical;
+  min-height: 56px;
+  max-height: 180px;
+  border-radius: 12px;
+  border: 1px solid #31435f;
+  background: #0e1626;
+  color: #e8ecf4;
+  padding: 12px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.composer textarea:focus {
+  outline: none;
+  border-color: #4a7ff7;
+}
+
+.composer button {
+  border: none;
+  background: #2a6df4;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  height: 56px;
+}
+
+.composer button:hover {
+  background: #3a79f5;
+}
